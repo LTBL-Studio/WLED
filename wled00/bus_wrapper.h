@@ -232,11 +232,11 @@
 //APA102
 #ifdef WLED_USE_ETHERNET
 // fix for #2542 (by @BlackBird77)
-#define B_HS_DOT_3 NeoPixelBrightnessBus<DotStarBgrFeature, DotStarEsp32DmaHspi5MhzMethod> //hardware HSPI with DMA (ESP32 only)
+#define B_HS_DOT_3 NeoPixelBusLg<DotStarBgrFeature, DotStarEsp32DmaHspi5MhzMethod, NeoGammaNullMethod> //hardware HSPI with DMA (ESP32 only)
 #else
-#define B_HS_DOT_3 NeoPixelBrightnessBus<DotStarBgrFeature, DotStarSpi5MhzMethod> //hardware HSPI
+#define B_HS_DOT_3 NeoPixelBusLg<DotStarBgrFeature, DotStarSpi5MhzMethod, NeoGammaNullMethod> //hardware HSPI
 #endif
-#define B_SS_DOT_3 NeoPixelBrightnessBus<DotStarBgrFeature, DotStarMethod>    //soft SPI
+#define B_SS_DOT_3 NeoPixelBusLg<DotStarBgrFeature, DotStarMethod, NeoGammaNullMethod>    //soft SPI
 
 //LPD8806
 #define B_HS_LPD_3 NeoPixelBusLg<Lpd8806GrbFeature, Lpd8806SpiMethod, NeoGammaNullMethod>
