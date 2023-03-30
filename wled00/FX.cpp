@@ -216,15 +216,19 @@ uint16_t color_wipe(bool rev, bool useRandomColors) {
  */
 uint16_t mode_fill(void) {
   uint32_t duration = 1000 * SEGMENT.speed + 1; // in milliseconds
+  
   if(SEGMENT.aux0 <= SEGLEN) {
-    SEGMENT.aux0 = (SEGMENT.step * SEGLEN) / duration;
-    uint16_t prog = ((SEGMENT.step * SEGLEN * 255) / duration) % 255;
+    if(SEGMENT.step == 0) {
+      SEGMENT.step = strip.now;
+    }
+
+    uint32_t ellapsed = (strip.now - SEGMENT.step) * SEGLEN;
+    SEGMENT.aux0 = ellapsed / duration;
+    uint16_t prog = ((ellapsed * 255) / duration) % 255;
 
     // char buffer[64];  // buffer must be big enough to hold all the message
     // sprintf(buffer, "step %d; duration %d; fillIndex %d; seglen %d; prog %d", SEGMENT.step, duration, SEGMENT.aux0, SEGLEN, prog);
     // Serial.println(buffer);
-
-    SEGMENT.step += FRAMETIME;
 
     uint32_t col1 = SEGCOLOR(1);
     for (uint16_t i = 0; i < SEGLEN; i++)
