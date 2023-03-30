@@ -1042,7 +1042,7 @@ function updateTrail(e)
 function toggleBubble(e)
 {
 	var b = e.target.parentNode.parentNode.getElementsByTagName('output')[0];
-	b.classList.toggle('sliderbubbleshow');
+	b?.classList.toggle('sliderbubbleshow');
 }
 
 // updates segment length upon input of segment values
