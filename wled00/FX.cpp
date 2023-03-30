@@ -215,30 +215,38 @@ uint16_t color_wipe(bool rev, bool useRandomColors) {
  * LEDs segment is filled on (color1) in sequence.
  */
 uint16_t mode_fill(void) {
-
   uint32_t duration = 1000 * SEGMENT.speed + 1000; // in milliseconds
-  uint32_t perc = (strip.now * SEGLEN) / duration;
-  uint16_t prog = ((strip.now * SEGLEN * 255) / duration) % 255 ;
+  if(SEGMENT.aux0 <= SEGLEN) {
+    SEGMENT.aux0 = (SEGMENT.step * SEGLEN) / duration;
+    uint16_t prog = ((SEGMENT.step * SEGLEN * 255) / duration) % 255;
 
-  char buffer[64];  // buffer must be big enough to hold all the message
-  sprintf(buffer, "now %d; duration %d; perc %d; seglen %d; prog %d", strip.now, duration, perc, SEGLEN, prog);
-  Serial.println(buffer);
+    // char buffer[64];  // buffer must be big enough to hold all the message
+    // sprintf(buffer, "step %d; duration %d; fillIndex %d; seglen %d; prog %d", SEGMENT.step, duration, SEGMENT.aux0, SEGLEN, prog);
+    // Serial.println(buffer);
 
-  if(perc <= SEGLEN) {
+    SEGMENT.step += FRAMETIME;
+
     uint32_t col1 = SEGCOLOR(1);
-    for (int i = 0; i < SEGLEN; i++)
+    for (uint16_t i = 0; i < SEGLEN; i++)
     {
-      uint16_t index = i;
-      uint32_t col0 = SEGMENT.color_from_palette(index, true, PALETTE_SOLID_WRAP, 0);
+      uint32_t col0 = SEGMENT.color_from_palette(i, true, PALETTE_SOLID_WRAP, 0);
 
-      if(index < perc) {
-        SEGMENT.setPixelColor(index, col0);
+      if(i < SEGMENT.aux0) {
+        SEGMENT.setPixelColor(i, col0);
       }
       else
       {
-        if (i == perc) SEGMENT.setPixelColor(index, color_blend(col1, col0, prog));
-        else SEGMENT.setPixelColor(index, col1);
+        if (i == SEGMENT.aux0) SEGMENT.setPixelColor(i, color_blend(col1, col0, prog));
+        else SEGMENT.setPixelColor(i, col1);
       }
+    }
+  }
+  else {
+    for (uint16_t i = 0; i < SEGLEN; i++)
+    {
+      uint32_t col0 = SEGMENT.color_from_palette(i, true, PALETTE_SOLID_WRAP, 0);
+
+      SEGMENT.setPixelColor(i, col0);
     }
   }
 
@@ -839,7 +847,7 @@ uint16_t mode_android(void) {
   }
   SEGENV.step = a;
 
-  return 3 + ((8 * (uint32_t)(255 - SEGMENT.speed)) / SEGLEN);
+  return 3 + ((32 * (uint32_t)(255 - SEGMENT.speed)) / SEGLEN);
 }
 static const char _data_FX_MODE_ANDROID[] PROGMEM = "Android@!,Width;!,!;!;;m12=1"; //vertical
 
