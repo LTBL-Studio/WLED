@@ -263,8 +263,8 @@ function onLoad()
 	if (localStorage.getItem('pcm') == "true" || (!/Mobi/.test(navigator.userAgent) && localStorage.getItem('pcm') == null)) togglePcMode(true);
 	var sls = d.querySelectorAll('input[type="range"]');
 	for (var sl of sls) {
-		sl.addEventListener('touchstart', toggleBubble);
-		sl.addEventListener('touchend', toggleBubble);
+		sl.addEventListener('pointerenter', toggleBubble);
+		sl.addEventListener('pointerleave', toggleBubble);
 	}
 }
 
