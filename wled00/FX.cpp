@@ -210,6 +210,41 @@ uint16_t color_wipe(bool rev, bool useRandomColors) {
   return FRAMETIME;
 }
 
+/*
+ * Color fill function
+ * LEDs segment is filled on (color1) in sequence.
+ */
+uint16_t mode_fill(void) {
+
+  uint32_t duration = 1000 * SEGMENT.speed + 1000; // in milliseconds
+  uint32_t perc = (strip.now * SEGLEN) / duration;
+  uint16_t prog = ((strip.now * SEGLEN * 255) / duration) % 255 ;
+
+  char buffer[64];  // buffer must be big enough to hold all the message
+  sprintf(buffer, "now %d; duration %d; perc %d; seglen %d; prog %d", strip.now, duration, perc, SEGLEN, prog);
+  Serial.println(buffer);
+
+  if(perc <= SEGLEN) {
+    uint32_t col1 = SEGCOLOR(1);
+    for (int i = 0; i < SEGLEN; i++)
+    {
+      uint16_t index = i;
+      uint32_t col0 = SEGMENT.color_from_palette(index, true, PALETTE_SOLID_WRAP, 0);
+
+      if(index < perc) {
+        SEGMENT.setPixelColor(index, col0);
+      }
+      else
+      {
+        if (i == perc) SEGMENT.setPixelColor(index, color_blend(col1, col0, prog));
+        else SEGMENT.setPixelColor(index, col1);
+      }
+    }
+  }
+
+  return FRAMETIME;
+}
+static const char _data_FX_MODE_FILL[] PROGMEM = "Fill@Duration;!,!;!;sx=9";
 
 /*
  * Lights all LEDs one after another.
@@ -7420,6 +7455,7 @@ void WS2812FX::setupEffectData() {
   }
   // now replace all pre-allocated effects
   // --- 1D non-audio effects ---
+  addEffect(FX_MODE_FILL, &mode_fill, _data_FX_MODE_FILL);
   addEffect(FX_MODE_BLINK, &mode_blink, _data_FX_MODE_BLINK);
   addEffect(FX_MODE_BREATH, &mode_breath, _data_FX_MODE_BREATH);
   addEffect(FX_MODE_COLOR_WIPE, &mode_color_wipe, _data_FX_MODE_COLOR_WIPE);
