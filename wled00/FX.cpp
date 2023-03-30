@@ -215,7 +215,7 @@ uint16_t color_wipe(bool rev, bool useRandomColors) {
  * LEDs segment is filled on (color1) in sequence.
  */
 uint16_t mode_fill(void) {
-  uint32_t duration = 1000 * SEGMENT.speed + 1000; // in milliseconds
+  uint32_t duration = 1000 * SEGMENT.speed + 1; // in milliseconds
   if(SEGMENT.aux0 <= SEGLEN) {
     SEGMENT.aux0 = (SEGMENT.step * SEGLEN) / duration;
     uint16_t prog = ((SEGMENT.step * SEGLEN * 255) / duration) % 255;
@@ -847,7 +847,7 @@ uint16_t mode_android(void) {
   }
   SEGENV.step = a;
 
-  return 3 + ((32 * (uint32_t)(255 - SEGMENT.speed)) / SEGLEN);
+  return 3 + ((8 * (uint32_t)(255 - SEGMENT.speed)) / SEGLEN);
 }
 static const char _data_FX_MODE_ANDROID[] PROGMEM = "Android@!,Width;!,!;!;;m12=1"; //vertical
 
