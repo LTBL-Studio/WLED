@@ -772,20 +772,20 @@ class PolyBus {
       case I_32_I1_TM1_4: (static_cast<B_32_I1_TM1_4*>(busPtr))->SetPixelColor(pix, col); break;
       case I_32_I1_TM2_3: (static_cast<B_32_I1_TM2_3*>(busPtr))->SetPixelColor(pix, RgbColor(col.R,col.G,col.B)); break;
       #endif
-      case I_32_RN_UCS_3: (static_cast<B_32_RN_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(col.R,col.G,col.B)); break;
+      case I_32_RN_UCS_3: (static_cast<B_32_RN_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(RgbColor(col.R,col.G,col.B))); break;
       #ifndef WLED_NO_I2S0_PIXELBUS
-      case I_32_I0_UCS_3: (static_cast<B_32_I0_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(col.R,col.G,col.B)); break;
+      case I_32_I0_UCS_3: (static_cast<B_32_I0_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(RgbColor(col.R,col.G,col.B))); break;
       #endif
       #ifndef WLED_NO_I2S1_PIXELBUS
       case I_32_I1_UCS_3: (static_cast<B_32_I1_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(col.R,col.G,col.B)); break;
       #endif
 //      case I_32_BB_UCS_3: (static_cast<B_32_BB_UCS_3*>(busPtr))->SetPixelColor(pix, Rgb48Color(col.R,col.G,col.B)); break;
-      case I_32_RN_UCS_4: (static_cast<B_32_RN_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col.R,col.G,col.B,col.W)); break;
+      case I_32_RN_UCS_4: (static_cast<B_32_RN_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col)); break;
       #ifndef WLED_NO_I2S0_PIXELBUS
-      case I_32_I0_UCS_4: (static_cast<B_32_I0_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col.R,col.G,col.B,col.W)); break;
+      case I_32_I0_UCS_4: (static_cast<B_32_I0_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col)); break;
       #endif
       #ifndef WLED_NO_I2S1_PIXELBUS
-      case I_32_I1_UCS_4: (static_cast<B_32_I1_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col.R,col.G,col.B,col.W)); break;
+      case I_32_I1_UCS_4: (static_cast<B_32_I1_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col)); break;
       #endif
 //      case I_32_BB_UCS_4: (static_cast<B_32_BB_UCS_4*>(busPtr))->SetPixelColor(pix, Rgbw64Color(col.R,col.G,col.B,col.W)); break;
     #endif
